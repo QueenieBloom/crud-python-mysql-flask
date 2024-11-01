@@ -1,0 +1,18 @@
+# Ignore the .env file containing sensitive information
+.env
+
+# Ignore Python cache files
+__pycache__/
+*.py[cod]
+
+# Ignore virtual environment folder
+venv/
+env/
+
+# Ignore IDE config files
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Ignore logs
+*.log
