@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.8/css/line.css" />
+    <title>{% block title %}Home{% endblock %}</title>
+</head>
+
+<body>
+    <header>
+        <nav class="navbar">
+            <button class="navbar-toggle" id="navbar-toggle">
+                <i class="uil uil-bars"></i>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbar">
+                <div class="navbar-links" id="navbar-links">
+                    <a class="nav-link" href="/login" id="login">login</a>
+                    <a class="nav-link" href="/sign-up" id="signUp">Sign Up</a>
+                    <a class="nav-link" href="/logout" id="logOut">logout</a>
+                    <a class="nav-link" href="/" id="home">Home</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+            {% if category == 'error' %}
+            <div class="alert alert-danger alert-dismissable fade show" role="alert">
+                {{ message }}
+                <button type="button" class="close" data-dismiss="alert">
+                    <i aria-hidden="true" class="uil uil-times"></i>
+                </button>
+            </div>
+            {% else %}
+            <div class="alert alert-sucess alert-dismissable fade show" role="alert">
+                {{ message }}
+                <button type="button" class="close" data-dismiss="alert">
+                    <i aria-hidden="true" class="uil uil-times"></i>
+                </button>
+            </div>
+            {% endif %}
+            {% endfor %}
+        {% endif %}
+        {% endwith %}
+        <div class="container">
+            {% block content %}
+            {% endblock %}
+        </div>
+    </main>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+
+</html>
