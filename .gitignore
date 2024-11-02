@@ -1,6 +1,10 @@
 # Ignore the .env file containing sensitive information
 .env
 
+#Ignore the admin_credentials.txt containing sensitive information
+admin_credentials.txt
+db_credentials.txt
+
 # Ignore Python cache files
 __pycache__/
 *.py[cod]

@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}Settings{% endblock %}
+
+{% block body %}
+<h2>Settings</h2>
+<div class="settings-container">
+    <div class="profile-settings">
+        <h3>Profile Picture</h3>
+        <input type="file" name="profile_picture" accept="image/*">
+        <button>Update Picture</button>
+    </div>
+
+    <div class="theme-settings">
+        <h3>Theme</h3>
+        <label>
+            <input type="radio" name="theme" value="light" checked> Light
+        </label>
+        <label>
+            <input type="radio" name="theme" value="dark"> Dark
+        </label>
+        <button>Save Theme</button>
+    </div>
+</div>
+{% endblock %}

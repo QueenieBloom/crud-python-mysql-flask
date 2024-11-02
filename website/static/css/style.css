@@ -7,63 +7,241 @@ body{
     flex-direction: column;
     align-items: center;
 }
-header{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    width: 100%;
-    height: 50px;
-    background-color: #333;
+/* Sidebar */
+.sidebar {
+  width: 200px;
+  height: 100%;
+  background-color: #2c3e50;
+  color: white;
+  position: fixed;
+  left: 0;
+  top: 0;
+  overflow: hidden;
+  transition: width 0.3s;
 }
 
-.navbar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    color: #fff;
-    padding: 10px 30px;
+.sidebar .profile-section {
+  padding: 20px;
+  text-align: center;
 }
 
-.navbar-brand a {
-    color: #fff;
-    font-size: 1.5em;
-    text-decoration: none;
+.sidebar .profile-photo {
+  border-radius: 50%;
+  width: 80px;
+  height: 80px;
 }
 
-.navbar-links {
-    display: flex;
-    gap: 20px;
+.sidebar .username {
+  margin-top: 10px;
 }
 
-.navbar-links a {
-    color: #fff;
-    text-decoration: none;
-    font-size: 1em;
+.sidebar ul {
+  list-style: none;
+  padding: 0;
 }
 
-.navbar-links a:hover {
-    text-decoration: underline;
+.sidebar ul li {
+  padding: 15px;
 }
 
-/*SIGN UP*/
+.sidebar ul li a {
+  color: white;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+}
+
+.sidebar ul li a i {
+  margin-right: 10px;
+}
+
+.menu-text {
+  display: inline;
+}
+
+/* Condensed sidebar */
+.sidebar.closed {
+  width: 60px;
+}
+
+.sidebar.closed .menu-text {
+  display: none;
+}
+
+.container {
+  margin-left: 220px;
+  padding: 20px;
+}
+
+/*Crud UP*/
 h1{
     text-align: center;
 }
-
-/*
-form{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 50px;
-    
-    padding: 50px 2px;
-    background-color: aqua;
-    border-radius: 2rem;
+#new {
+  font-size: 16px;
+  padding: 8px;
+  border-radius: 5px;
+  border: none;
+  color: white;
+  background-color: rgb(57, 57, 226);
 }
-*/
-.name, .password, .input-field{
+
+.divTable {
+  padding: 10px;
+  width: auto; 
+  height:inherit; 
+  overflow:auto;
+}
+
+.divTable::-webkit-scrollbar {
+  width: 12px;
+  background-color: whitesmoke; 
+}
+
+.divTable::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background-color: darkgray; 
+}
+
+table {
+  width: 100%;
+  border-spacing: 10px;
+  word-break: break-all;
+  border-collapse: collapse;
+}
+
+thead {
+  background-color: whitesmoke;
+}
+
+tr {
+  border-bottom: 1px solid rgb(238, 235, 235)!important;
+}
+
+tbody tr td {
+  vertical-align: text-top;
+  padding: 6px;
+  max-width: 50px;
+}
+
+thead tr th {
+  padding: 5px;
+  text-align: start;
+  margin-bottom: 50px;
+}
+
+tbody tr {
+  margin-bottom: 50px;
+}
+
+thead tr th.action {
+  width: 100px!important;
+  text-align: center;
+}
+
+tbody tr td.action {
+  text-align: center;
+}
+
+/* Estilo de formatação do container do formulário */
+@media (max-width: 700px) {
+
+  #new {
+    padding: 5px;
+    font-size: 10px;
+  }
+
+  thead tr th.action {
+    width: auto!important;
+  }
+  
+  td button i {
+    font-size: 20px!important;
+  }
+
+  td button i:first-child {
+    margin-right: 0;
+  }
+
+  .modal {
+    width: 90%!important;
+  }
+
+  .modal label {
+    font-size: 12px!important;
+  }
+}
+
+.modal-container {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: none;
+  z-index: 999;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px;
+  background-color: white;
+  border-radius: 10px;
+  width: 50%;
+}
+
+
+.modal button {
+  width: 100%;
+  margin: 10px auto;
+  outline: none;
+  border-radius: 20px; 
+  padding: 5px 10px; 
+  width: 100%;
+  border: none;
+  background-color: rgb(57, 57, 226);
+  color: white;
+}
+
+.active {
+  display: flex;
+}
+
+.active .modal {
+  animation: modal .4s;
+}
+
+@keyframes modal {
+  from {
+    opacity: 0;
+    transform: translate3d(0, -60px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+td button {
+  border: none;
+  outline: none;
+  background: transparent;
+}
+
+td button i {
+  font-size: 25px;
+}
+
+td button i:first-child {
+  margin-right: 10px;
+}
+
+.name, .input-field{
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -71,22 +249,6 @@ form{
     width: 100%;
 }
 
-/* Estilo de formatação do container do formulário */
-form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 20px;
-    width: 580px;
-    padding: 20px;
-    background-color: rgb(105, 244, 244, 0.5);
-    backdrop-filter: blur(2px);
-    border-radius: 1rem;
-    color: #11998e;
-    
-  }
-  
   /* Estilo para o grupo de campos de formulário */
   .input-field {
     position: relative;
@@ -145,59 +307,5 @@ form {
     transition: ease-in 0.1s;
   }
   
-  /* Botão de envio */
-  button {
-    font-size: 1rem;
-    color: #fff;
-    background-color: #11998e;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-  
-  button:hover {
-    background-color: #38ef7d;
-  }
   
 
-/* Estilos para o botão do menu hambúrguer em dispositivos menores */
-.navbar-toggle {
-    display: none;
-    background: none;
-    border: none;
-    cursor: pointer;
-    color: #fff;
-    font-size: 1.5em;
-}
-
-@media (max-width: 768px) {
-
-    .navbar-links {
-        display: none;
-        flex-direction: column;
-        background-color: #333;
-        position: absolute;
-        top: 50px;
-        right: 0;
-        left: 0;
-        width: 100%;
-        border-radius: 0 0 8px 8px;
-    }
-
-    .navbar-toggle {
-        display: flex;
-    }
-
-    .navbar-links a {
-        margin: 5px 0;
-    }
-
-    /* Mostrar os links do menu quando estiver ativo */
-    .navbar-links.show {
-        display: flex;
-        padding: 10px 40px;
-
-    }
-}
