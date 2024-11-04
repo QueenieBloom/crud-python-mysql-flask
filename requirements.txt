@@ -1,3 +1,7 @@
 Flask
 mysql-connector-python
 python-dotenv
+cryptography
+secrets
+bycrypt
+

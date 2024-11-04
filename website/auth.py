@@ -4,7 +4,7 @@ from flask import Blueprint, render_template, request, redirect, url_for, flash,
 auth = Blueprint('auth', __name__)
 
 def check_admin_login(username, password):
-    """Verifica se o usuário e senha fornecidos coincidem com os dados do administrador descriptografados."""
+    """Checks if the provided username and password match the decrypted admin credentials."""
     admin_username = current_app.config['ADMIN_USERNAME']
     admin_password = current_app.config['ADMIN_PASSWORD']
 
@@ -18,13 +18,15 @@ def login():
 
         if check_admin_login(username, password):
             session['admin_logged_in'] = True
+            session['username'] = username
             return redirect(url_for('views.home'))
         else:
-            flash('Login inválido. Tente novamente.')
+            flash('Invalid login. Please try again.')
 
     return render_template("login.html")
 
 @auth.route('/logout')
 def logout():
     session.pop('admin_logged_in', None)
+    session.pop('username', None)
     return redirect(url_for('auth.login'))

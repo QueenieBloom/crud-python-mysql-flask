@@ -1,126 +1,108 @@
+let editingUserId = null;
 
-const modal = document.querySelector('.modal-container')
-const tbody = document.querySelector('tbody')
-const sNome = document.querySelector('#m-nome')
-const sFuncao = document.querySelector('#m-funcao')
-const sSalario = document.querySelector('#m-salario')
-const btnSalvar = document.querySelector('#btnSalvar')
+function openModal() {
+  document.querySelector(".modal-container").style.display = "flex";
+}
 
-let itens
-let id
+function closeModal() {
+  document.querySelector(".modal-container").style.display = "none";
+  editingUserId = null;
+  document.getElementById("userForm").reset();
+}
 
-document.addEventListener("DOMContentLoaded", function () {
-    const formInputs = document.querySelectorAll(".form-input");
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('expanded');
+}
+
+document.getElementById("btnSave").addEventListener("click", function(event) {
+  event.preventDefault();
   
-    formInputs.forEach((input) => {
-      // Função para verificar se o campo está preenchido
-      const checkValue = () => {
-        if (input.value) {
-          input.classList.add("filled");
-        } else {
-          input.classList.remove("filled");
-        }
-      };
+  const data = {
+    firstName: document.getElementById("m-firstName").value,
+    lastName: document.getElementById("m-lastName").value,
+    username: document.getElementById("m-username").value,
+    email: document.getElementById("m-email").value,
+    password: document.getElementById("m-password").value
+  };
+
+  let url = "/add_user";
+  let method = "POST";
   
-      // Verifica valor ao carregar a página (para preenchimento automático)
-      checkValue();
-  
-      // Verifica valor ao foco e desfoco do campo
-      input.addEventListener("input", checkValue);
-      input.addEventListener("focus", checkValue);
-      input.addEventListener("blur", checkValue);
-    });
-});
-
-document.querySelector('.sidebar-toggle').addEventListener('click', function() {
-  document.querySelector('.sidebar').classList.toggle('closed');
-});
-
-
-function openModal(edit = false, index = 0) {
-  modal.classList.add('active')
-
-  modal.onclick = e => {
-    if (e.target.className.indexOf('modal-container') !== -1) {
-      modal.classList.remove('active')
-    }
+  if (editingUserId) {
+    url = `/update_user/${editingUserId}`;
+    method = "PUT";
   }
 
-  if (edit) {
-    sNome.value = itens[index].nome
-    sFuncao.value = itens[index].funcao
-    sSalario.value = itens[index].salario
-    id = index
-  } else {
-    sNome.value = ''
-    sFuncao.value = ''
-    sSalario.value = ''
-  }
-  
-}
-
-function editItem(index) {
-
-  openModal(true, index)
-}
-
-function deleteItem(index) {
-  itens.splice(index, 1)
-  setItensBD()
-  loadItens()
-}
-
-function insertItem(item, index) {
-  let tr = document.createElement('tr')
-
-  tr.innerHTML = `
-    <td>${item.nome}</td>
-    <td>${item.funcao}</td>
-    <td>R$ ${item.salario}</td>
-    <td class="acao">
-      <button onclick="editItem(${index})"><i class='bx bx-edit' ></i></button>
-    </td>
-    <td class="acao">
-      <button onclick="deleteItem(${index})"><i class='bx bx-trash'></i></button>
-    </td>
-  `
-  tbody.appendChild(tr)
-}
-
-btnSalvar.onclick = e => {
-  
-  if (sNome.value == '' || sFuncao.value == '' || sSalario.value == '') {
-    return
-  }
-
-  e.preventDefault();
-
-  if (id !== undefined) {
-    itens[id].nome = sNome.value
-    itens[id].funcao = sFuncao.value
-    itens[id].salario = sSalario.value
-  } else {
-    itens.push({'nome': sNome.value, 'funcao': sFuncao.value, 'salario': sSalario.value})
-  }
-
-  setItensBD()
-
-  modal.classList.remove('active')
-  loadItens()
-  id = undefined
-}
-
-function loadItens() {
-  itens = getItensBD()
-  tbody.innerHTML = ''
-  itens.forEach((item, index) => {
-    insertItem(item, index)
+  fetch(url, {
+    method: method,
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(data)
   })
+  .then(response => response.json())
+  .then(data => {
+    if (data.redirect) {
+      window.location.href = data.redirect;
+    }
+  })
+  .catch(error => console.error("Error:", error));
+});
 
+function loadUsers() {
+  fetch("/get_users")
+    .then(response => response.json())
+    .then(data => {
+      const tbody = document.querySelector("tbody");
+      tbody.innerHTML = "";
+      data.users.forEach(user => {
+        tbody.innerHTML += `
+          <tr>
+            <td>${user.id}</td>
+            <td>${user.firstName}</td>
+            <td>${user.lastName}</td>
+            <td>${user.username}</td>
+            <td>${user.email}</td>
+            <td>${user.password}</td>
+            <td><button class="btn-edit" onclick="editUser(${user.id})"><i class="uil uil-edit"></i></button></td>
+            <td><button class="btn-delete" onclick="deleteUser(${user.id})"><i class="uil uil-trash"></i></button></td>
+          </tr>
+        `;
+      });
+    })
+    .catch(error => console.error("Error:", error));
 }
 
-const getItensBD = () => JSON.parse(localStorage.getItem('dbfunc')) ?? []
-const setItensBD = () => localStorage.setItem('dbfunc', JSON.stringify(itens))
+function editUser(id) {
+  fetch(`/get_user/${id}`)
+    .then(response => response.json())
+    .then(data => {
+      document.getElementById("m-firstName").value = data.user.firstName;
+      document.getElementById("m-lastName").value = data.user.lastName;
+      document.getElementById("m-username").value = data.user.username;
+      document.getElementById("m-email").value = data.user.email;
+      document.getElementById("m-password").value = "";
 
-loadItens()
-  
+      editingUserId = id;
+      openModal();
+    })
+    .catch(error => console.error("Error:", error));
+}
+
+function deleteUser(id) {
+  fetch(`/delete_user/${id}`, { method: "DELETE" })
+    .then(response => response.json())
+    .then(data => {
+      if (data.redirect) {
+        window.location.href = data.redirect;
+      }
+    })
+    .catch(error => console.error("Error:", error));
+}
+
+function closeFlashMessage(button) {
+  const messageElement = button.parentElement;
+  messageElement.style.display = 'none';
+}
+
+window.onload = loadUsers;

@@ -1,17 +1,70 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
-    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.8/css/line.css" />
-    <title>{% block title %}Home{% endblock %}</title>
-</head>
-
-<body>{% block body %}{% endblock %}
+    <title>{% block title %}My App{% endblock %}</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/style.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="https://unicons.iconscout.com/release/v4.0.8/css/line.css"
+    />
     
-    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
-</body>
+  </head>
+  <body>
+    <div class="sidebar" id="sidebar">
+      <!-- Toggle button -->
+      <div class="toggle-btn" onclick="toggleSidebar()">
+        <i class="uil uil-bars"></i>
+      </div>
 
+      <!-- User image and name -->
+      <img
+        src="{{ url_for('static', filename='images/user.png') }}"
+        alt="User Image"
+        class="user-image"
+      />
+      <div class="user-name">{{ session.get('username', 'Usuário') }}</div>
+
+      <!-- Menu items -->
+      <div class="menu-links">
+        <a href="{{ url_for('views.home') }}" class="menu-item">
+          <i class="uil uil-estate"></i>
+          <div class="menu-text">Home</div>
+        </a>
+        <a href="{{ url_for('views.settings') }}" class="menu-item">
+          <i class="uil uil-setting"></i>
+          <div class="menu-text">Settings</div>
+        </a>
+      </div>
+      <div class="logout">
+        <a href="{{ url_for('auth.logout') }}" class="logout-item">
+          <i class="uil uil-sign-out-alt"></i>
+          <div class="menu-text">Logout</div>
+        </a>
+      </div>
+    </div>
+
+    <main>
+      <div id="flash-messages">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <ul>
+                    {% for category, message in messages %}
+                    <li class="{{ category }}">
+                        {{ message }}
+                        <button class="close-message" onclick="closeFlashMessage(this)">X</button>
+                    </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
+    </div>
+      {% block main%}{% endblock %}
+    </main>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+  </body>
 </html>

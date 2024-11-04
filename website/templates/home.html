@@ -2,14 +2,14 @@
 
 {% block title %}CRUD Home{% endblock %}
 
-{% block body %}
-<div class="container">
-    <div class="header">
+{% block main %}
+<div class="crud-container">
+    <div class="crud-header">
       <span>Cadastro de Funcionários</span>
       <button onclick="openModal()" id="new">Incluir</i></button>
     </div>
 
-    <div class="divTable">
+    <div class="div-table">
       <table>
         <thead>
           <tr>
@@ -31,32 +31,36 @@
 
     <div class="modal-container" style="display:none;">
       <div class="modal">
-        <form>
+        
+        <button class="close-btn" onclick="closeModal()"><i class="uil uil-times"></i></button>
+        <form id="userForm" method="POST" action="{{ url_for('views.add_user') }}">
+
           <div class="name">
             <div class="input-field">
-              <input type="text" name="firstName" id="m-firstName" placeholder="Enter first name" required>
-              <label for="m-firstName">First Name</label>
+              <input class ="form-input" type="text" name="firstName" id="m-firstName" placeholder="Enter first name" required>
+              <label class ="form-label" for="m-firstName">First Name</label>
             </div>
             <div class="input-field">
-              <input type="text" name="lastName" id="m-lastName" placeholder="Enter last name" required>
-              <label for="m-lastName">Last Name</label>
+              <input class ="form-input" type="text" name="lastName" id="m-lastName" placeholder="Enter last name" required>
+              <label class ="form-label" for="m-lastName">Last Name</label>
             </div>
+
           </div>
           <div class="input-field">
-            <input type="text" id="m-username" name="username" placeholder="Enter a username" required>
-            <label for="m-username">Username</label>
+            <input class ="form-input" type="text" id="m-username" name="username" placeholder="Enter a username" required>
+            <label class ="form-label" for="m-username">Username</label>
           </div>
           <div class="input-field">
-            <input type="email" id="m-email" name="email" placeholder="Enter a valid email" required>
-            <label for="m-email">Email Address</label>
+            <input class ="form-input" type="email" id="m-email" name="email" placeholder="Enter a valid email" required>
+            <label class ="form-label" for="m-email">Email Address</label>
           </div>
           <div class="input-field">
-            <input type="password" id="m-password" name="password" placeholder="Enter password" required>
-            <label for="m-password">Password</label>
+            <input class ="form-input" type="password" id="m-password" name="password" placeholder="Enter password" required>
+            <label class ="form-label" for="m-password">Password</label>
           </div>
-          <button id="btnSave">Save</button> 
+          <button class="save-btn" id="btnSave">Save</button>
         </form>
       </div>
-    </div>
+    </div>    
 </div>
 {% endblock %}
